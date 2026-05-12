@@ -1,0 +1,40 @@
+data:
+  pmc_dir: "data/pmc_articles"
+  processed_dir: "data/processed"
+  index_dir: "data/index"
+
+indexing:
+  chunk_size: 512
+  chunk_overlap: 64
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  collection_name: "medrag_articles"
+
+retrieval:
+  bm25_top_k: 100
+  vector_top_k: 100
+  hybrid_top_k: 20
+  bm25_weight: 0.4
+  vector_weight: 0.6
+
+reranker:
+  model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  top_k: 5
+
+generation:
+  model: "google/flan-t5-base"
+  max_new_tokens: 256
+  temperature: 0.1
+
+verification:
+  model: "cross-encoder/nli-deberta-v3-base"
+  entailment_threshold: 0.5
+  thresholds:
+    low: 0.7
+    medium: 0.4
+
+evaluation:
+  benchmark: "bioasq"
+  metrics: ["ndcg_at_5", "recall_at_10", "hallucination_rate"]
+  rerank_k_values: [3, 5, 10, 20]
+
+results_dir: "results"
