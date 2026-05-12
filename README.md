@@ -48,6 +48,16 @@ Metrics: **NDCG@5, NDCG@10, Recall@10** with **95% Bootstrap CI** (1000 samples,
 
 ---
 
+## Limitations
+
+- **NLI faithfulness check is conservative** — with a strict context-grounded prompt, a well-aligned LLM (Llama 3.3 70B) correctly defers to retrieved context rather than asserting unsupported claims, resulting in 0% hallucination even on adversarial questions. Hallucination would surface with a weaker or unaligned model.
+- **NLI scores "I cannot answer" as LOW risk** — when retrieved chunks lack relevant information, the LLM says "context insufficient" which is technically faithful but uninformative. The faithfulness score does not distinguish between a good grounded answer and a refusal.
+- **NFCorpus retrieval scores are moderate** — NDCG@5 range of 0.34–0.46 reflects the genuine difficulty of the benchmark (blog-style queries vs PubMed abstracts). Higher scores would be expected on a corpus with direct question-answer alignment.
+- **Small generation eval set** — 24 questions (20 standard + 4 adversarial) is sufficient for a prototype but not for statistical significance.
+- **Single corpus domain** — evaluated on nutrition/health literature only. Performance on other medical domains (clinical notes, radiology, genomics) is untested.
+
+---
+
 ## Future Work
 
 - **Graph RAG** — extract medical entity-relationship graph (drugs, diseases, genes) using scispaCy, combine graph traversal with hybrid retrieval for richer answers on complex multi-hop medical questions
